@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 
-app.post('/api/v1/search',echo,end);
+app.post('/api/v1/search',saver,end);
 
 function saver(req,res,next){
   console.dir(req.body);
