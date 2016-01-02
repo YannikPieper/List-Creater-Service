@@ -9,7 +9,7 @@ var conString = 'postgres://localhost:5432/jonathan';
 
 app.use(bodyParser.json());
 
-app.post('/api/v1/search',echo,db_test,end);
+app.post('/api/v1/search',echo,db_search,end);
 
 function echo(req,res,next){
   console.dir(req.body);
@@ -21,10 +21,8 @@ function end(req,res){
   res.end;
 }
 
-//'TABLE list_creater_service'
-
-function db_test(req,res,next){
-  var a = 'SELECT id FROM list_creater_service WHERE size <=' + req.body.size.max + 'AND size >= ' + req.body.size.min + 'AND ' + req.body.gamemode + ' = ANY(gamemode) AND country = '  + req.body.country;
+function db_search(req,res,next){
+  var a = 'SELECT id, name, size FROM list_creater_service WHERE size <=' + req.body.size.max + 'AND size >= ' + req.body.size.min + 'AND ' + req.body.gamemode + ' = ANY(gamemode) AND country = '  + req.body.country;
   console.log(a);
   pg.connect(conString, function(err, client, done) {
     if(err) {
@@ -38,6 +36,8 @@ function db_test(req,res,next){
       for(var i = 0;i <= result.rows.length;i++){
         console.log(result.rows[i]);
       }
+      res.json(result.rows)
     });
   });
+  next();
 }
