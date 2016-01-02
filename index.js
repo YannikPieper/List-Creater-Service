@@ -21,19 +21,23 @@ function end(req,res){
   res.end;
 }
 
+//'TABLE list_creater_service'
+
 function db_test(req,res,next){
+  var a = 'SELECT id FROM list_creater_service WHERE size <=' + req.body.size.max + 'AND size >= ' + req.body.size.min + 'AND ' + req.body.gamemode + ' = ANY(gamemode) AND country = '  + req.body.country;
+  console.log(a);
   pg.connect(conString, function(err, client, done) {
     if(err) {
       return console.error('error fetching client from pool', err);
     }
-    client.query('TABLE list_creater_service',function(err, result) {
+    client.query(a,function(err, result) {
       done();
       if(err) {
         return console.error('error running query', err);
       }
-      //for(var i = 0;i <= result.rows.length;i++){
-        console.log(result);
-      //}
+      for(var i = 0;i <= result.rows.length;i++){
+        console.log(result.rows[i]);
+      }
     });
   });
 }
